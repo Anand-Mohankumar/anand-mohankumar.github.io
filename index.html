@@ -257,11 +257,9 @@
 
     .content-area {
       flex: 1;
-      overflow-y: auto;
+      overflow: hidden;
       padding: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      position: relative;
       max-width: 100%;
     }
 
@@ -274,27 +272,32 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       display: flex;
       flex-direction: column;
-      transition: all 0.3s;
-      width: min(90vh, 800px);
-      max-width: calc(100vw - 180px);
-      height: min(85vh, calc(90vh - 80px));
-      max-height: calc(100vh - 120px);
-    }
-    
-    .window-card.square-window {
+      transition: box-shadow 0.3s, transform 0.3s;
       width: min(calc(100vh - 120px), 700px);
       height: min(calc(100vh - 120px), 700px);
+      max-width: calc(100vw - 180px);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .window-card:hover {
-      transform: translateY(-2px);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+    
+    .window-card.dragging {
+      transition: none;
+      cursor: move;
     }
 
     .window-card.full-width {
       width: calc(100vw - 180px);
       height: calc(100vh - 120px);
       max-width: none;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .card-header {
@@ -305,6 +308,8 @@
       align-items: center;
       background: rgba(255, 255, 255, 0.03);
       border-radius: 12px 12px 0 0;
+      cursor: move;
+      user-select: none;
     }
 
     .card-title {
@@ -532,19 +537,9 @@
       }
       
       .window-card {
-        width: min(85vh, 700px);
-        max-width: calc(100vw - 120px);
-        height: min(80vh, calc(85vh - 80px));
-      }
-      
-      .window-card.square-window {
         width: min(calc(100vh - 140px), 600px);
         height: min(calc(100vh - 140px), 600px);
-      }
-      
-      .window-card.full-width {
-        width: calc(100vw - 120px);
-        height: calc(100vh - 120px);
+        max-width: calc(100vw - 120px);
       }
     }
 
@@ -570,27 +565,29 @@
       .content-area {
         padding: 12px;
         display: block;
+        overflow-y: auto;
       }
       
       .window-card {
-        width: calc(100% - 24px);
-        max-width: none;
-        min-height: auto;
-        height: auto;
-        max-height: none;
-        aspect-ratio: 0.85 / 1;
+        position: relative;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        width: calc(100vw - 80px);
+        height: calc(100vw - 80px);
+        max-width: calc(100vh - 150px);
+        max-height: calc(100vh - 150px);
         margin: 12px auto;
       }
       
-      .window-card.square-window {
-        width: calc(100% - 24px);
-        height: auto;
-        aspect-ratio: 0.85 / 1;
+      .card-header {
+        cursor: default;
       }
       
       .window-card.full-width {
         width: calc(100% - 24px);
         height: auto;
+        max-height: none;
         aspect-ratio: 0.85 / 1;
       }
       
@@ -706,19 +703,23 @@
       }
       
       .window-card {
-        width: calc(100% - 16px);
-        aspect-ratio: 0.8 / 1;
+        position: relative;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        width: calc(100vw - 60px);
+        height: calc(100vw - 60px);
+        max-width: calc(100vh - 180px);
+        max-height: calc(100vh - 180px);
         border-radius: 10px;
         margin: 8px auto;
       }
       
-      .window-card.square-window {
-        width: calc(100% - 16px);
-        aspect-ratio: 0.8 / 1;
-      }
-      
       .window-card.full-width {
         width: calc(100% - 16px);
+        height: auto;
+        max-height: none;
+        aspect-ratio: 0.8 / 1;
       }
       
       .card-header {
@@ -842,7 +843,7 @@
       <!-- Content Area -->
       <div class="content-area">
         <!-- Home Card -->
-        <div class="window-card square-window" id="homeCard">
+        <div class="window-card" id="homeCard">
           <div class="card-header">
             <div class="card-title">Home</div>
             <div class="card-controls">
@@ -957,7 +958,7 @@
         </div>
 
         <!-- Skills Card -->
-        <div class="window-card square-window" id="skillsCard" style="display: none;">
+        <div class="window-card" id="skillsCard" style="display: none;">
           <div class="card-header">
             <div class="card-title">Skills</div>
             <div class="card-controls">
@@ -1018,7 +1019,7 @@
         </div>
 
         <!-- Iframe Card (dynamic) -->
-        <div class="window-card full-width" id="iframeCard" style="display: none;">
+        <div class="window-card" id="iframeCard" style="display: none;">
           <div class="card-header">
             <div class="card-title" id="iframeTitle">Content</div>
             <div class="card-controls">
@@ -1027,7 +1028,7 @@
               <div class="control-btn btn-close" onclick="closeIframe()"></div>
             </div>
           </div>
-          <div class="card-content" style="padding: 0; height: calc(100vh - 200px);">
+          <div class="card-content" style="padding: 0; flex: 1;">
             <iframe id="contentIframe" style="width: 100%; height: 100%; border: none; border-radius: 0 0 12px 12px;"></iframe>
           </div>
         </div>
@@ -1070,6 +1071,9 @@
 
     let openWindows = ['home']; // Track open windows
     let activeWindow = 'home';
+    let draggedWindow = null;
+    let dragOffset = { x: 0, y: 0 };
+    let isDragging = false;
 
     function updateOpenWindowsTabs() {
       const container = document.getElementById('openWindowsTabs');
@@ -1096,12 +1100,10 @@
     }
 
     function showView(viewName) {
-      // Hide all cards
-      Object.values(cards).forEach(card => card.style.display = 'none');
-      
-      // Show selected card
+      // Show selected card (don't hide others)
       if (cards[viewName]) {
         cards[viewName].style.display = 'flex';
+        bringToFront(cards[viewName]);
       }
       
       // Add to open windows if not already there
@@ -1121,6 +1123,87 @@
       
       updateOpenWindowsTabs();
     }
+    
+    function bringToFront(window) {
+      const allWindows = document.querySelectorAll('.window-card');
+      let maxZ = 1000;
+      allWindows.forEach(w => {
+        const z = parseInt(w.style.zIndex || 1000);
+        if (z > maxZ) maxZ = z;
+      });
+      window.style.zIndex = maxZ + 1;
+    }
+
+    // Draggable windows
+    function initDraggable() {
+      const allWindows = document.querySelectorAll('.window-card');
+      
+      allWindows.forEach(windowCard => {
+        const header = windowCard.querySelector('.card-header');
+        
+        header.addEventListener('mousedown', (e) => {
+          // Don't drag if clicking on control buttons
+          if (e.target.closest('.control-btn')) return;
+          
+          isDragging = true;
+          draggedWindow = windowCard;
+          
+          const rect = windowCard.getBoundingClientRect();
+          dragOffset.x = e.clientX - rect.left;
+          dragOffset.y = e.clientY - rect.top;
+          
+          windowCard.classList.add('dragging');
+          bringToFront(windowCard);
+          
+          e.preventDefault();
+        });
+      });
+    }
+    
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging || !draggedWindow) return;
+      
+      const contentArea = document.querySelector('.content-area');
+      const contentRect = contentArea.getBoundingClientRect();
+      
+      let newX = e.clientX - contentRect.left - dragOffset.x;
+      let newY = e.clientY - contentRect.top - dragOffset.y;
+      
+      // Constrain to content area
+      const windowRect = draggedWindow.getBoundingClientRect();
+      const maxX = contentRect.width - windowRect.width;
+      const maxY = contentRect.height - windowRect.height;
+      
+      newX = Math.max(0, Math.min(newX, maxX));
+      newY = Math.max(0, Math.min(newY, maxY));
+      
+      draggedWindow.style.left = newX + 'px';
+      draggedWindow.style.top = newY + 'px';
+      draggedWindow.style.transform = 'none';
+    });
+    
+    document.addEventListener('mouseup', () => {
+      if (draggedWindow) {
+        draggedWindow.classList.remove('dragging');
+      }
+      isDragging = false;
+      draggedWindow = null;
+    });
+    
+    // Initialize draggable after DOM is ready
+    setTimeout(() => {
+      initDraggable();
+      
+      // Cascade windows slightly for visual clarity
+      const windowsToOffset = ['projects', 'skills', 'terminal'];
+      windowsToOffset.forEach((view, index) => {
+        if (cards[view]) {
+          const offset = (index + 1) * 40;
+          cards[view].style.left = `calc(50% + ${offset}px)`;
+          cards[view].style.top = `calc(50% + ${offset}px)`;
+        }
+      });
+    }, 100);
 
     function closeWindow(viewName) {
       openWindows = openWindows.filter(w => w !== viewName);
@@ -1143,7 +1226,15 @@
     // Sidebar navigation
     document.querySelectorAll('.sidebar-item').forEach(item => {
       item.addEventListener('click', () => {
-        showView(item.dataset.view);
+        const view = item.dataset.view;
+        // If window is already open, just bring to front
+        if (openWindows.includes(view) && cards[view].style.display === 'flex') {
+          bringToFront(cards[view]);
+          activeWindow = view;
+          updateOpenWindowsTabs();
+        } else {
+          showView(view);
+        }
       });
     });
 
@@ -1161,6 +1252,23 @@
           closeWindow(viewName);
         } else if (btn.classList.contains('btn-maximize')) {
           card.classList.toggle('full-width');
+          if (card.classList.contains('full-width')) {
+            card.style.left = '50%';
+            card.style.top = '50%';
+            card.style.transform = 'translate(-50%, -50%)';
+          }
+        }
+      });
+    });
+    
+    // Click on window to bring to front
+    document.querySelectorAll('.window-card').forEach(win => {
+      win.addEventListener('mousedown', () => {
+        bringToFront(win);
+        const viewName = Object.keys(cards).find(key => cards[key] === win);
+        if (viewName) {
+          activeWindow = viewName;
+          updateOpenWindowsTabs();
         }
       });
     });
@@ -1170,6 +1278,13 @@
       document.getElementById('contentIframe').src = url;
       document.getElementById('iframeTitle').textContent = title;
       showView('iframe');
+      
+      // Offset iframe window slightly from center
+      const iframeCard = document.getElementById('iframeCard');
+      setTimeout(() => {
+        iframeCard.style.left = 'calc(50% + 30px)';
+        iframeCard.style.top = 'calc(50% + 30px)';
+      }, 50);
     }
 
     function closeIframe() {
