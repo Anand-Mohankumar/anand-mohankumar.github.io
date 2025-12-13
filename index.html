@@ -775,9 +775,20 @@
         padding: 4px 8px;
       }
     }
+      
+    /* WebGL Background */
+    #webgl-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
+  <canvas id="webgl-bg"></canvas>
   <!-- Boot Screen -->
   <div class="boot-screen" id="bootScreen">
     <div class="boot-logo">
@@ -907,7 +918,7 @@
           <div class="card-content">
             <h3 style="color: #8BA5B8; margin-bottom: 16px;">My Work</h3>
             <div class="project-grid">
-              <div class="project-item" onclick="openInIframe('https://medium.com/@anand.mohankumar', 'Medium - Labs & Research')">
+              <div class="project-item" onclick="showView('research')">
                 <div class="project-icon">🔬</div>
                 <div class="project-title">Labs, Research<br>and CTF</div>
               </div>
@@ -953,6 +964,35 @@
               <div class="terminal-line"><span class="terminal-prompt">anand@security:~$</span> echo $INTERESTS</div>
               <div class="terminal-line">CTF | OSINT | Threat Hunting</div>
               <div class="terminal-line"><span class="terminal-prompt">anand@security:~$</span> <span style="animation: blink 1s infinite;">_</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Research Card -->
+        <div class="window-card" id="researchCard" style="display: none;">
+          <div class="card-header">
+            <div class="card-title">Labs & Research</div>
+            <div class="card-controls">
+              <div class="control-btn btn-minimize"></div>
+              <div class="control-btn btn-maximize"></div>
+              <div class="control-btn btn-close"></div>
+            </div>
+          </div>
+          <div class="card-content">
+            <h3 style="color:#8BA5B8; margin-bottom:16px;">Research Notes</h3>
+            <div class="project-grid">
+              <div class="project-item">
+                <div class="project-icon">📄</div>
+                <div class="project-title">Networking Fundamentals</div>
+              </div>
+              <div class="project-item">
+                <div class="project-icon">📄</div>
+                <div class="project-title">Linux Fundamentals</div>
+              </div>
+              <div class="project-item">
+                <div class="project-icon">📄</div>
+                <div class="project-title">ISC2 CC Lecture Notes</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1062,6 +1102,7 @@
 
     // View switching
     const cards = {
+      research: document.getElementById('researchCard'),
       home: document.getElementById('homeCard'),
       projects: document.getElementById('projectsCard'),
       skills: document.getElementById('skillsCard'),
@@ -1291,151 +1332,104 @@
       document.getElementById('contentIframe').src = '';
       closeWindow('iframe');
     }
-  </script>
-</body>
-</html>
-            <h3>Industry Knowledge</h3>
-            <div class="skill-tags">
-              <div class="skill-tag">Security Incident Management</div>
-              <div class="skill-tag">OSINT</div>
-              <div class="skill-tag">Cloud Computing</div>
-              <div class="skill-tag">OWASP</div>
-              <div class="skill-tag">Monitoring and Investigation</div>
-              <div class="skill-tag">Networking concepts</div>
-              <div class="skill-tag">Vulnerability Management</div>
-              <div class="skill-tag">Log Analysis</div>
-              <div class="skill-tag">Compliance Frameworks</div>
-              <div class="skill-tag">Cyber Security</div>
-              <div class="skill-tag">TCP/IP</div>
-              <div class="skill-tag">TPRM</div>
-              <div class="skill-tag">SCRM</div>
-            </div>
-            
-            <h3>Tools and Technologies</h3>
-            <div class="skill-tags">
-              <div class="skill-tag">Wazuh</div>
-              <div class="skill-tag">EDR</div>
-              <div class="skill-tag">XDR</div>
-              <div class="skill-tag">SIEM</div>
-              <div class="skill-tag">Splunk</div>
-              <div class="skill-tag">AWS</div>
-              <div class="skill-tag">Linux</div>
-              <div class="skill-tag">Nmap</div>
-              <div class="skill-tag">OpenVAS</div>
-              <div class="skill-tag">ZAP</div>
-              <div class="skill-tag">MITRE ATT&CK</div>
-              <div class="skill-tag">Active Directory</div>
-              <div class="skill-tag">Email Forensics</div>
-              <div class="skill-tag">Wireshark</div>
-            </div>
-            
-            <h3>Interpersonal Skills</h3>
-            <div class="skill-tags">
-              <div class="skill-tag">Communication</div>
-              <div class="skill-tag">Problem Solving</div>
-            </div>
-            
-            <h3>Interests</h3>
-            <div class="skill-tags">
-              <div class="skill-tag">CTF</div>
-              <div class="skill-tag">OSINT</div>
-              <div class="skill-tag">Threat Hunting</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Boot screen
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('bootScreen').classList.add('hidden');
-      }, 2800);
-    });
+  
     
-    // Clock
-    function updateClock() {
-      const now = new Date();
-      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      const day = days[now.getDay()];
-      const month = months[now.getMonth()];
-      const date = now.getDate();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      document.getElementById('clock').textContent = `${day}, ${month} ${date} | ${hours}:${minutes} PM`;
+    /* WebGL animated background (lightweight shader) */
+    const canvas = document.getElementById('webgl-bg');
+    const gl = canvas.getContext('webgl');
+
+    function resizeGL() {
+      canvas.width = window.innerWidth * devicePixelRatio;
+      canvas.height = window.innerHeight * devicePixelRatio;
+      gl.viewport(0, 0, canvas.width, canvas.height);
     }
-    updateClock();
-    setInterval(updateClock, 1000);
+    window.addEventListener('resize', resizeGL);
 
-    // View switching
-    const cards = {
-      home: document.getElementById('homeCard'),
-      projects: document.getElementById('projectsCard'),
-      skills: document.getElementById('skillsCard'),
-      terminal: document.getElementById('terminalCard')
-    };
+    const vertexSrc = `
+      attribute vec2 position;
+      void main() {
+        gl_Position = vec4(position, 0.0, 1.0);
+      }
+    `;
 
-    function showView(viewName) {
-      // Hide all cards
-      Object.values(cards).forEach(card => card.style.display = 'none');
-      
-      // Show selected card
-      cards[viewName].style.display = 'flex';
-      
-      // Update sidebar active state
-      document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.classList.remove('active');
-        if (item.dataset.view === viewName) {
-          item.classList.add('active');
-        }
-      });
-      
-      // Update top nav tabs
-      document.querySelectorAll('.nav-tab').forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.dataset.tab === viewName) {
-          tab.classList.add('active');
-        }
-      });
+    const fragmentSrc = `
+      precision highp float;
+      uniform float u_time;
+      uniform vec2 u_res;
+      uniform vec2 u_mouse;
+
+      float noise(vec2 p) {
+        return sin(p.x) * sin(p.y);
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / u_res;
+        vec2 p = uv * 4.0;
+        vec2 m = u_mouse / u_res;
+        float dist = distance(uv, m);
+        p += (m - uv) * 2.0 * exp(-dist * 6.0);
+        float n = noise(p + u_time * 0.15);
+                        // Theme-based palette (derived from site gradients)
+        vec3 slateBlue = vec3(0.36, 0.43, 0.49);   // #5D6D7E
+        vec3 warmSand  = vec3(0.55, 0.43, 0.37);   // #8B6F5E
+        vec3 deepBrown = vec3(0.42, 0.31, 0.24);   // #6B4E3D
+
+        float wave = 0.5 + 0.5 * sin(n + u_time * 0.4);
+        vec3 baseMix = mix(slateBlue, warmSand, wave);
+        vec3 col = mix(baseMix, deepBrown, 0.25 + 0.25 * sin(u_time * 0.2));
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `;
+
+    function compile(type, src) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
     }
 
-    // Sidebar navigation
-    document.querySelectorAll('.sidebar-item').forEach(item => {
-      item.addEventListener('click', () => {
-        showView(item.dataset.view);
-      });
-    });
+    const program = gl.createProgram();
+    gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSrc));
+    gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSrc));
+    gl.linkProgram(program);
+    gl.useProgram(program);
 
-    // Top nav tabs
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        showView(tab.dataset.tab);
-      });
-    });
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+      -1, -1,  1, -1, -1,  1,
+      -1,  1,  1, -1,  1,  1
+    ]), gl.STATIC_DRAW);
 
-    // Window control buttons
-    document.querySelectorAll('.control-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const card = btn.closest('.window-card');
-        
-        if (btn.classList.contains('btn-close')) {
-          card.style.display = 'none';
-          // Show home view when closing
-          if (card.id !== 'homeCard') {
-            showView('home');
-          }
-        } else if (btn.classList.contains('btn-minimize')) {
-          card.style.display = 'none';
-          showView('home');
-        } else if (btn.classList.contains('btn-maximize')) {
-          card.classList.toggle('full-width');
-        }
-      });
+    const pos = gl.getAttribLocation(program, 'position');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const uTime = gl.getUniformLocation(program, 'u_time');
+    const uRes = gl.getUniformLocation(program, 'u_res');
+    const uMouse = gl.getUniformLocation(program, 'u_mouse');
+
+    resizeGL();
+
+    let mouseX = canvas.width * 0.5;
+    let mouseY = canvas.height * 0.5;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX * devicePixelRatio;
+      mouseY = (window.innerHeight - e.clientY) * devicePixelRatio;
     });
+    const start = performance.now();
+
+    function render() {
+      const t = (performance.now() - start) * 0.001;
+      gl.uniform1f(uTime, t);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform2f(uMouse, mouseX, mouseY);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      requestAnimationFrame(render);
+    }
+    render();
+
   </script>
 </body>
 </html>
