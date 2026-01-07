@@ -20,7 +20,8 @@
     /* Use Google Sans across the UI (terminal excluded) */
     body {
       font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Ubuntu, sans-serif;
-      background: linear-gradient(135deg, #4A5C6A 0%, #5D6D7E 25%, #6B7C8A 50%, #8B6F5E 75%, #6B4E3D 100%);
+      /* Background handled by WebGL, fallback gradient */
+      background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
       height: 100vh;
       overflow: hidden;
       color: #fff;
@@ -33,13 +34,13 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #3A4C5A 0%, #4A5C6A 50%, #5A3E2F 100%);
+      background: #1a1a1a;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 9999;
-      transition: opacity 0.5s ease-out;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .boot-screen.hidden {
@@ -48,74 +49,61 @@
     }
     
     .boot-logo {
-      width: 180px;
-      height: 180px;
-      margin-bottom: 60px;
+      width: 150px;
+      height: 150px;
+      margin-bottom: 40px;
       animation: logoFadeIn 1s ease-out;
-      border-radius: 50%;
-      background: radial-gradient(circle at top left, rgba(255,255,255,0.15), rgba(0,0,0,0.25));
-      box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.6),
-        inset 0 0 25px rgba(255, 255, 255, 0.15);
+      border-radius: 32px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
       display: flex;
       align-items: center;
       justify-content: center;
     }
     
     .boot-logo img {
-      width: 70%;
-      height: 70%;
+      width: 65%;
+      height: 65%;
       object-fit: contain;
-      border-radius: 50%;
-      box-shadow:
-        0 0 25px rgba(255, 138, 76, 0.6),
-        0 0 45px rgba(93, 109, 126, 0.4);
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
     }
     
     @keyframes logoFadeIn {
-      0% {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
     }
     
     .loading-container {
-      width: 300px;
+      width: 240px;
       text-align: center;
     }
     
     .loading-text {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 16px;
-      letter-spacing: 1px;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
     }
     
     .loading-bar {
       width: 100%;
-      height: 4px;
+      height: 2px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 2px;
       overflow: hidden;
-      position: relative;
     }
     
     .loading-progress {
       height: 100%;
-      background: linear-gradient(90deg, #5D6D7E 0%, #8B6F5E 100%);
+      background: #fff;
+      width: 0%;
       border-radius: 2px;
-      animation: loadingProgress 2.5s ease-out forwards;
-      box-shadow: 0 0 10px rgba(93, 109, 126, 0.5);
+      animation: loadingProgress 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
     }
     
     @keyframes loadingProgress {
@@ -128,73 +116,89 @@
       display: flex;
     }
 
-    /* Sidebar */
+    /* GLASS SIDEBAR */
     .sidebar {
-      width: 48px;
-      background: rgba(40, 50, 60, 0.95);
-      backdrop-filter: blur(20px);
+      width: 60px;
+      background: rgba(20, 25, 30, 0.3);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 12px 0;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
-      gap: 8px;
+      padding: 16px 0;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 16px;
+      z-index: 100;
+      box-shadow: 5px 0 25px rgba(0,0,0,0.1);
     }
 
     .sidebar-item {
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      border-radius: 8px;
-      transition: all 0.3s;
+      border-radius: 14px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       position: relative;
+      color: rgba(255, 255, 255, 0.6);
     }
 
     .sidebar-item:hover {
-      background: rgba(93, 109, 126, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .sidebar-item.active {
-      background: rgba(107, 78, 61, 0.4);
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      box-shadow: 
+        inset 0 0 0 1px rgba(255,255,255,0.1),
+        0 4px 15px rgba(0,0,0,0.3);
     }
 
     .sidebar-item.active::before {
       content: '';
       position: absolute;
-      left: -12px;
-      width: 3px;
+      left: -6px;
+      width: 4px;
       height: 20px;
-      background: linear-gradient(180deg, #5D6D7E 0%, #8B6F5E 100%);
-      border-radius: 0 3px 3px 0;
+      background: #fff;
+      border-radius: 0 4px 4px 0;
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
     }
 
-    /* Top Bar */
+    /* GLASS TOPBAR */
     .topbar {
-      height: 36px;
-      background: rgba(40, 50, 60, 0.95);
-      backdrop-filter: blur(20px);
+      height: 50px;
+      background: rgba(20, 25, 30, 0.3);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
       display: flex;
       align-items: center;
-      padding: 0 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       justify-content: space-between;
+      z-index: 90;
     }
 
     .topbar-left {
       display: flex;
-      gap: 16px;
+      gap: 20px;
       align-items: center;
       flex: 1;
       overflow: hidden;
     }
 
     .app-logo {
-      width: 20px;
-      height: 20px;
+      width: 32px;
+      height: 32px;
       flex-shrink: 0;
+      opacity: 0.95;
+      filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
     }
 
     .app-logo img {
@@ -210,15 +214,22 @@
     }
 
     .nav-tab {
-      padding: 6px 12px;
+      padding: 6px 14px;
       font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 8px;
       transition: all 0.2s;
       display: flex;
       align-items: center;
-      gap: 6px;
-      background: linear-gradient(135deg, rgba(93, 109, 126, 0.3) 0%, rgba(107, 78, 61, 0.3) 100%);
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(255,255,255,0.9);
+    }
+    
+    .nav-tab:hover {
+        background: rgba(255, 255, 255, 0.15);
     }
 
     .open-windows-tabs {
@@ -229,6 +240,8 @@
       flex: 1;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      padding-left: 12px;
+      border-left: 1px solid rgba(255,255,255,0.1);
     }
     
     .open-windows-tabs::-webkit-scrollbar {
@@ -236,33 +249,41 @@
     }
     
     .window-tab {
-      padding: 6px 12px;
+      padding: 5px 12px;
       font-size: 12px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 6px;
       transition: all 0.2s;
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       white-space: nowrap;
       flex-shrink: 0;
+      color: rgba(255,255,255,0.6);
     }
 
     .window-tab:hover {
-      background: rgba(93, 109, 126, 0.3);
-      border-color: rgba(93, 109, 126, 0.5);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
     }
 
     .window-tab.active-window-tab {
-      background: linear-gradient(135deg, rgba(93, 109, 126, 0.4) 0%, rgba(107, 78, 61, 0.4) 100%);
-      border-color: rgba(93, 109, 126, 0.6);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .topbar-right {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.7);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(0,0,0,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
     /* Main Content */
@@ -281,51 +302,64 @@
       max-width: 100%;
     }
 
-    /* Window Card */
+    /* GLASS WINDOW CARD */
     .window-card {
-      background: rgba(50, 60, 70, 0.9);
-      backdrop-filter: blur(20px);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      /* The core frosted glass effect */
+      background: rgba(40, 45, 55, 0.55);
+      backdrop-filter: blur(40px) saturate(160%);
+      -webkit-backdrop-filter: blur(40px) saturate(160%);
+      
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset; /* Inner glow */
+        
       display: flex;
       flex-direction: column;
-      transition: box-shadow 0.3s, transform 0.3s;
-      width: min(calc(100vh - 120px), 700px);
-      height: min(calc(100vh - 120px), 700px);
+      transition: transform 0.2s, opacity 0.2s, width 0.3s, height 0.3s;
+      width: min(calc(100vh - 120px), 750px);
+      height: min(calc(100vh - 120px), 650px);
       max-width: calc(100vw - 180px);
       position: absolute;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+      overflow: hidden;
     }
 
-    .window-card:hover {
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    /* Active window pops slightly */
+    .window-card[style*="z-index"]:not([style*="z-index: auto"]) {
+        box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+        border-color: rgba(255,255,255,0.2);
     }
     
     .window-card.dragging {
       transition: none;
       cursor: move;
+      box-shadow: 0 40px 70px rgba(0, 0, 0, 0.6);
     }
 
     .window-card.full-width {
-      width: calc(100vw - 180px);
-      height: calc(100vh - 120px);
+      width: calc(100vw - 120px);
+      height: calc(100vh - 100px);
       max-width: none;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+      border-radius: 12px;
     }
 
     .card-header {
-      padding: 12px 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 12px 12px 0 0;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent);
+      border-radius: 16px 16px 0 0;
       cursor: move;
       user-select: none;
     }
@@ -333,47 +367,96 @@
     .card-title {
       font-size: 14px;
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255, 255, 255, 0.95);
+      letter-spacing: 0.3px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
 
+    /* PREMIUM CONTROLS */
     .card-controls {
       display: flex;
-      gap: 8px;
+      gap: 12px; /* Increased gap for elegance */
+      align-items: center;
     }
 
     .control-btn {
-      width: 12px;
-      height: 12px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       cursor: pointer;
-      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+      
+      /* Flexbox for Perfect Centering */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      /* Base Glass Material */
+      background: linear-gradient(145deg, rgba(220, 240, 255, 0.15), rgba(220, 240, 255, 0.05));
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      
+      /* Delicate Border */
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      
+      /* Lighting Effects */
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3), /* Top highlight */
+        0 2px 4px rgba(0, 0, 0, 0.1); /* Drop shadow */
+        
+      transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+      
+      /* Icon Color */
+      color: rgba(255, 255, 255, 0.85);
     }
-
+    
     .control-btn:hover {
-      transform: scale(1.2);
+      background: linear-gradient(145deg, rgba(220, 240, 255, 0.3), rgba(220, 240, 255, 0.1));
+      border-color: rgba(255, 255, 255, 0.5);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        0 4px 8px rgba(0, 0, 0, 0.15);
     }
-
-    .btn-minimize { background: #FFB52E; }
-    .btn-maximize { background: #28C840; }
-    .btn-close { background: #FF5F57; }
+    
+    .control-btn:active {
+        transform: translateY(0) scale(0.96);
+        box-shadow: 
+            inset 0 2px 4px rgba(0,0,0,0.1),
+            0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    /* Specific Hover Colors for functionality hint */
+    .btn-close:hover {
+        background: linear-gradient(145deg, rgba(255, 95, 87, 0.4), rgba(255, 95, 87, 0.2));
+        border-color: rgba(255, 95, 87, 0.5);
+        color: #fff;
+    }
 
     .card-content {
-      padding: 24px;
+      padding: 30px;
       overflow-y: auto;
       flex: 1;
     }
 
+    /* Glassy Scrollbar */
     .card-content::-webkit-scrollbar {
       width: 6px;
     }
 
     .card-content::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.1);
+      background: transparent;
     }
 
     .card-content::-webkit-scrollbar-thumb {
-      background: rgba(93, 109, 126, 0.3);
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 3px;
+    }
+
+    .card-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
     }
 
     /* Home Card */
@@ -382,147 +465,190 @@
     }
 
     .profile-picture {
-      width: 100px;
-      height: 100px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
-      margin: 0 auto 16px;
-      border: 3px solid rgba(93, 109, 126, 0.5);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      margin: 0 auto 20px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s;
+    }
+    
+    .profile-picture:hover {
+        transform: scale(1.05) rotate(2deg);
+        border-color: rgba(255,255,255,0.2);
     }
 
     .profile-name {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #FF8A4C;
-      text-shadow: 0 2px 8px rgba(255, 138, 76, 0.3);
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     .profile-subtitle {
-      font-size: 13px;
-      color: #A89680;
-      margin-bottom: 16px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 24px;
+      background: rgba(255,255,255,0.05);
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
     }
 
     .profile-description {
-      font-size: 13px;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.8);
-      margin-bottom: 12px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 16px;
       text-align: left;
+      background: rgba(0,0,0,0.2); /* Slight darken for text contrast */
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.03);
     }
 
     .social-buttons {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 16px;
+      gap: 12px;
+      margin-top: 24px;
     }
 
     .social-btn {
-      padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
       color: #fff;
       text-decoration: none;
-      font-size: 12px;
+      font-size: 13px;
+      font-weight: 500;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       transition: all 0.3s;
+      backdrop-filter: blur(5px);
     }
 
     .social-btn:hover {
-      background: linear-gradient(135deg, rgba(93, 109, 126, 0.4) 0%, rgba(107, 78, 61, 0.3) 100%);
-      border-color: rgba(93, 109, 126, 0.5);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
       transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
     /* Projects Card */
     .project-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      gap: 20px;
     }
 
     .project-item {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 16px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 24px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       text-align: center;
       transition: all 0.3s;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .project-item::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
     }
 
     .project-item:hover {
-      background: linear-gradient(135deg, rgba(93, 109, 126, 0.2) 0%, rgba(107, 78, 61, 0.2) 100%);
-      border-color: rgba(93, 109, 126, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .project-item:hover::before {
+        opacity: 1;
     }
 
     .project-icon {
-      font-size: 48px;
-      margin-bottom: 12px;
-      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+      font-size: 42px;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     }
 
     .project-title {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.9);
-      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.95);
+      margin-top: 4px;
     }
 
     /* Skills Card */
     .skills-section h3 {
-      font-size: 16px;
-      background: linear-gradient(135deg, #8BA5B8 0%, #A89680 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
       margin-bottom: 16px;
+      margin-top: 8px;
     }
 
     .skill-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 24px;
+      gap: 10px;
+      margin-bottom: 30px;
     }
 
     .skill-tag {
-      padding: 6px 14px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 6px;
-      font-size: 12px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.9);
       transition: all 0.2s;
       cursor: default;
+      backdrop-filter: blur(5px);
     }
 
     .skill-tag:hover {
-      background: linear-gradient(135deg, rgba(93, 109, 126, 0.3) 0%, rgba(107, 78, 61, 0.2) 100%);
-      border-color: rgba(93, 109, 126, 0.5);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
     }
 
-    /* Terminal Card: preserve monospace */
+    /* Terminal Card: glass effect for terminal too */
     .terminal-content {
-      background: rgba(20, 25, 30, 0.9);
-      padding: 16px;
-      border-radius: 6px;
+      background: rgba(10, 15, 20, 0.6);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
       font-family: 'Courier New', monospace;
       font-size: 13px;
-      color: #5D6D7E;
+      color: #ccc;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+      min-height: 300px;
     }
 
     .terminal-line {
-      margin-bottom: 8px;
-      color: #A0B0C0;
+      margin-bottom: 10px;
+      color: #d0d0d0;
+      line-height: 1.5;
     }
 
     .terminal-prompt {
-      color: #8B6F5E;
+      color: #4cd964;
+      font-weight: bold;
     }
 
     @keyframes blink {
@@ -536,20 +662,16 @@
     }
 
     .content-area::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.2);
+      background: transparent;
     }
 
     .content-area::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, rgba(93, 109, 126, 0.5) 0%, rgba(107, 78, 61, 0.5) 100%);
+      background: rgba(255, 255, 255, 0.2);
       border-radius: 4px;
     }
 
     .content-area::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(180deg, rgba(93, 109, 126, 0.7) 0%, rgba(107, 78, 61, 0.7) 100%);
-    }
-
-    .content-area::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(180deg, rgba(93, 109, 126, 0.7) 0%, rgba(107, 78, 61, 0.7) 100%);
+      background: rgba(255, 255, 255, 0.4);
     }
 
     /* Responsive */
@@ -568,12 +690,14 @@
     @media (max-width: 768px) {
       .sidebar {
         width: 100%;
-        height: 56px;
+        height: 60px;
         flex-direction: row;
-        padding: 0 12px;
+        padding: 0 20px;
         border-right: none;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         order: 2;
+        justify-content: space-around;
+        background: rgba(20, 25, 30, 0.6); /* Less transparent on mobile for legibility */
       }
 
       .desktop {
@@ -595,11 +719,12 @@
         left: auto !important;
         top: auto !important;
         transform: none !important;
-        width: calc(100vw - 80px);
-        height: calc(100vw - 80px);
-        max-width: calc(100vh - 150px);
-        max-height: calc(100vh - 150px);
+        width: calc(100vw - 40px);
+        height: calc(100vw - 20px); /* Taller on mobile */
+        max-width: none;
+        max-height: none;
         margin: 12px auto;
+        min-height: 500px;
       }
       
       .card-header {
@@ -610,191 +735,54 @@
         width: calc(100% - 24px);
         height: auto;
         max-height: none;
-        aspect-ratio: 0.85 / 1;
       }
       
       .card-content {
-        padding: 16px;
+        padding: 20px;
         font-size: 13px;
+      }
+      
+      .profile-picture {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 16px;
+      }
+      
+      .profile-name {
+        font-size: 22px;
+      }
+      
+      .social-buttons {
+        gap: 10px;
+      }
+      
+      .topbar {
+        padding: 0 16px;
+      }
+      
+      .sidebar-item.active::before {
+        left: auto;
+        bottom: -16px;
+        top: auto;
+        width: 20px;
+        height: 4px;
+        border-radius: 4px 4px 0 0;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .window-card {
+        width: calc(100vw - 24px);
+        margin: 6px auto;
       }
       
       .profile-picture {
         width: 80px;
         height: 80px;
-        margin-bottom: 12px;
-        border-width: 2px;
-      }
-      
-      .profile-name {
-        font-size: 20px;
-      }
-      
-      .profile-subtitle {
-        font-size: 12px;
-        margin-bottom: 12px;
-      }
-      
-      .profile-description {
-        font-size: 12px;
-        line-height: 1.5;
-        margin-bottom: 10px;
-      }
-      
-      .social-buttons {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        margin-top: 12px;
-      }
-      
-      .social-btn {
-        padding: 8px 12px;
-        font-size: 11px;
-      }
-
-      .project-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-      
-      .project-item {
-        padding: 12px;
-      }
-      
-      .project-icon {
-        font-size: 36px;
-      }
-      
-      .project-title {
-        font-size: 11px;
-      }
-      
-      .skill-tags {
-        gap: 6px;
-      }
-      
-      .skill-tag {
-        padding: 5px 10px;
-        font-size: 11px;
-      }
-      
-      .skills-section h3 {
-        font-size: 14px;
-        margin-bottom: 12px;
-      }
-      
-      .terminal-content {
-        font-size: 11px;
-        padding: 12px;
-      }
-
-      .nav-tabs {
-        overflow-x: auto;
-        flex-shrink: 1;
-      }
-      
-      .nav-tab {
-        font-size: 11px;
-        padding: 5px 10px;
-      }
-      
-      .open-windows-tabs {
-        display: none;
-      }
-      
-      .topbar {
-        padding: 0 12px;
-      }
-      
-      .topbar-right {
-        font-size: 10px;
-      }
-
-      .sidebar-item.active::before {
-        left: auto;
-        bottom: -12px;
-        top: auto;
-        width: 20px;
-        height: 3px;
-        border-radius: 3px 3px 0 0;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .content-area {
-        padding: 8px;
-      }
-      
-      .window-card {
-        position: relative;
-        left: auto !important;
-        top: auto !important;
-        transform: none !important;
-        width: calc(100vw - 60px);
-        height: calc(100vw - 60px);
-        max-width: calc(100vh - 180px);
-        max-height: calc(100vh - 180px);
-        border-radius: 10px;
-        margin: 8px auto;
-      }
-      
-      .window-card.full-width {
-        width: calc(100% - 16px);
-        height: auto;
-        max-height: none;
-        aspect-ratio: 0.8 / 1;
-      }
-      
-      .card-header {
-        padding: 10px 12px;
-      }
-      
-      .card-title {
-        font-size: 12px;
-      }
-      
-      .card-content {
-        padding: 12px;
-      }
-      
-      .profile-picture {
-        width: 70px;
-        height: 70px;
-      }
-      
-      .profile-name {
-        font-size: 18px;
-      }
-      
-      .profile-subtitle {
-        font-size: 11px;
-      }
-      
-      .profile-description {
-        font-size: 11px;
-        margin-bottom: 8px;
-      }
-      
-      .social-btn {
-        padding: 8px 10px;
-        font-size: 10px;
-      }
-      
-      .social-btn svg {
-        width: 12px;
-        height: 12px;
       }
       
       .project-grid {
         grid-template-columns: 1fr;
-      }
-      
-      .topbar {
-        height: 32px;
-      }
-      
-      .nav-tab {
-        font-size: 10px;
-        padding: 4px 8px;
       }
     }
       
@@ -828,24 +816,24 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="sidebar-item active" data-view="home" title="Home">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
           <polyline points="9 22 9 12 15 12 15 22"/>
         </svg>
       </div>
       <div class="sidebar-item" data-view="projects" title="Projects">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
           <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
         </svg>
       </div>
       <div class="sidebar-item" data-view="skills" title="Skills">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
         </svg>
       </div>
       <div class="sidebar-item" data-view="terminal" title="Terminal">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="4 17 10 11 4 5"/>
           <line x1="12" y1="19" x2="20" y2="19"/>
         </svg>
@@ -880,9 +868,15 @@
           <div class="card-header">
             <div class="card-title">Home</div>
             <div class="card-controls">
-              <div class="control-btn btn-minimize"></div>
-              <div class="control-btn btn-maximize"></div>
-              <div class="control-btn btn-close"></div>
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
             </div>
           </div>
           <div class="card-content profile-section">
@@ -932,13 +926,19 @@
           <div class="card-header">
             <div class="card-title">Projects</div>
             <div class="card-controls">
-              <div class="control-btn btn-minimize"></div>
-              <div class="control-btn btn-maximize"></div>
-              <div class="control-btn btn-close"></div>
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
             </div>
           </div>
           <div class="card-content">
-            <h3 style="color: #8BA5B8; margin-bottom: 16px;">My Work</h3>
+            <h3 style="color: rgba(255,255,255,0.7); margin-bottom: 20px; font-weight:500;">My Work</h3>
             <div class="project-grid">
               <div class="project-item" onclick="showView('research')">
                 <div class="project-icon">🔬</div>
@@ -965,9 +965,15 @@
           <div class="card-header">
             <div class="card-title">Terminal</div>
             <div class="card-controls">
-              <div class="control-btn btn-minimize"></div>
-              <div class="control-btn btn-maximize"></div>
-              <div class="control-btn btn-close"></div>
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
             </div>
           </div>
           <div class="card-content">
@@ -995,13 +1001,19 @@
           <div class="card-header">
             <div class="card-title">Labs & Research</div>
             <div class="card-controls">
-              <div class="control-btn btn-minimize"></div>
-              <div class="control-btn btn-maximize"></div>
-              <div class="control-btn btn-close"></div>
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
             </div>
           </div>
           <div class="card-content">
-            <h3 style="color:#8BA5B8; margin-bottom:16px;">Research Notes</h3>
+            <h3 style="color:rgba(255,255,255,0.7); margin-bottom:20px;">Research Notes</h3>
             <div class="project-grid">
               <div class="project-item"
                 onclick="window.open('https://anand-mohankumar.github.io/Networking-Fundamentals/', '_blank')">
@@ -1022,9 +1034,15 @@
           <div class="card-header">
             <div class="card-title">Skills</div>
             <div class="card-controls">
-              <div class="control-btn btn-minimize"></div>
-              <div class="control-btn btn-maximize"></div>
-              <div class="control-btn btn-close"></div>
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
             </div>
           </div>
           <div class="card-content skills-section">
@@ -1083,13 +1101,19 @@
           <div class="card-header">
             <div class="card-title" id="iframeTitle">Content</div>
             <div class="card-controls">
-              <div class="control-btn btn-minimize"></div>
-              <div class="control-btn btn-maximize"></div>
-              <div class="control-btn btn-close" onclick="closeIframe()"></div>
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" onclick="closeIframe()" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
             </div>
           </div>
           <div class="card-content" style="padding: 0; flex: 1;">
-            <iframe id="contentIframe" style="width: 100%; height: 100%; border: none; border-radius: 0 0 12px 12px;"></iframe>
+            <iframe id="contentIframe" style="width: 100%; height: 100%; border: none; border-radius: 0 0 16px 16px;"></iframe>
           </div>
         </div>
       </div>
@@ -1102,7 +1126,7 @@
       setTimeout(() => {
         document.getElementById('bootScreen').classList.add('hidden');
         updateOpenWindowsTabs();
-      }, 2800);
+      }, 2500); // Slightly shorter for snappier feel
     });
     
     // Clock
@@ -1115,7 +1139,7 @@
       const date = now.getDate();
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
-      document.getElementById('clock').textContent = `${day}, ${month} ${date} | ${hours}:${minutes} PM`;
+      document.getElementById('clock').textContent = `${day}, ${month} ${date} | ${hours}:${minutes}`;
     }
     updateClock();
     setInterval(updateClock, 1000);
@@ -1154,7 +1178,14 @@
         if (windowName === activeWindow) {
           tab.classList.add('active-window-tab');
         }
-        tab.textContent = windowTitles[windowName];
+        // Small icon for tab
+        let icon = '📄';
+        if (windowName === 'home') icon = '🏠';
+        else if (windowName === 'terminal') icon = '💻';
+        else if (windowName === 'projects') icon = '💼';
+        else if (windowName === 'skills') icon = '⚡';
+        
+        tab.innerHTML = `${icon} ${windowTitles[windowName]}`;
         tab.onclick = () => showView(windowName);
         container.appendChild(tab);
       });
@@ -1164,6 +1195,10 @@
       // Show selected card (don't hide others)
       if (cards[viewName]) {
         cards[viewName].style.display = 'flex';
+        // Small animation reset
+        cards[viewName].style.animation = 'none';
+        cards[viewName].offsetHeight; /* trigger reflow */
+        cards[viewName].style.animation = 'fadeIn 0.3s ease-out';
         bringToFront(cards[viewName]);
       }
       
@@ -1235,7 +1270,7 @@
       const maxX = contentRect.width - windowRect.width;
       const maxY = contentRect.height - windowRect.height;
       
-      newX = Math.max(0, Math.min(newX, maxX));
+      newX = Math.max(-windowRect.width/2, Math.min(newX, contentRect.width - windowRect.width/2));
       newY = Math.max(0, Math.min(newY, maxY));
       
       draggedWindow.style.left = newX + 'px';
@@ -1259,7 +1294,7 @@
       const windowsToOffset = ['projects', 'skills', 'terminal'];
       windowsToOffset.forEach((view, index) => {
         if (cards[view]) {
-          const offset = (index + 1) * 40;
+          const offset = (index + 1) * 30;
           cards[view].style.left = `calc(50% + ${offset}px)`;
           cards[view].style.top = `calc(50% + ${offset}px)`;
         }
@@ -1304,12 +1339,11 @@
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const card = btn.closest('.window-card');
-        
+        const viewName = Object.keys(cards).find(key => cards[key] === card);
+
         if (btn.classList.contains('btn-close')) {
-          const viewName = Object.keys(cards).find(key => cards[key] === card);
           closeWindow(viewName);
         } else if (btn.classList.contains('btn-minimize')) {
-          const viewName = Object.keys(cards).find(key => cards[key] === card);
           closeWindow(viewName);
         } else if (btn.classList.contains('btn-maximize')) {
           card.classList.toggle('full-width');
@@ -1345,6 +1379,7 @@
       setTimeout(() => {
         iframeCard.style.left = 'calc(50% + 30px)';
         iframeCard.style.top = 'calc(50% + 30px)';
+        bringToFront(iframeCard);
       }, 50);
     }
 
@@ -1354,7 +1389,7 @@
     }
   
     
-    /* WebGL animated background (lightweight shader) */
+    /* WebGL animated background (Updated colors for Glass theme) */
     const canvas = document.getElementById('webgl-bg');
     const gl = canvas.getContext('webgl');
 
@@ -1384,19 +1419,26 @@
 
       void main() {
         vec2 uv = gl_FragCoord.xy / u_res;
-        vec2 p = uv * 4.0;
-        vec2 m = u_mouse / u_res;
-        float dist = distance(uv, m);
-        p += (m - uv) * 2.0 * exp(-dist * 6.0);
-        float n = noise(p + u_time * 0.15);
-                        // Theme-based palette (derived from site gradients)
-        vec3 slateBlue = vec3(0.36, 0.43, 0.49);   // #5D6D7E
-        vec3 warmSand  = vec3(0.55, 0.43, 0.37);   // #8B6F5E
-        vec3 deepBrown = vec3(0.42, 0.31, 0.24);   // #6B4E3D
+        vec2 p = uv * 3.0;
+        
+        // Gentle floaty movement
+        float n = noise(p + u_time * 0.1);
+        
+        // Color palette for frosted look (Teals, Slates, and Deep Blues)
+        vec3 c1 = vec3(0.1, 0.15, 0.2);  // Dark slate
+        vec3 c2 = vec3(0.2, 0.3, 0.35);  // Muted blue
+        vec3 c3 = vec3(0.25, 0.4, 0.45); // Lighter teal accent
 
-        float wave = 0.5 + 0.5 * sin(n + u_time * 0.4);
-        vec3 baseMix = mix(slateBlue, warmSand, wave);
-        vec3 col = mix(baseMix, deepBrown, 0.25 + 0.25 * sin(u_time * 0.2));
+        float wave = 0.5 + 0.5 * sin(uv.x * 5.0 + u_time * 0.2 + n * 2.0);
+        float wave2 = 0.5 + 0.5 * cos(uv.y * 3.0 - u_time * 0.15);
+        
+        vec3 col = mix(c1, c2, wave);
+        col = mix(col, c3, wave2 * 0.5);
+        
+        // Subtle Vignette
+        float vig = 1.0 - length(uv - 0.5) * 0.5;
+        col *= vig;
+
         gl_FragColor = vec4(col, 1.0);
       }
     `;
