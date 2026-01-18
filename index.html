@@ -975,6 +975,49 @@
       line-height: 1.5;
     }
 
+    /* NEW: Infographic Thumbnail Styles */
+    .infographic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .infographic-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .infographic-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .infographic-thumb {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      object-position: top;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .infographic-caption {
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      background: rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
     /* Section Headers */
     .section-header {
       font-size: 16px;
@@ -1428,7 +1471,8 @@
                 </div>
               </div>
 
-              <div class="resource-hero-card" onclick="alert('Infographics coming soon!')">
+              <!-- UPDATED ONCLICK -->
+              <div class="resource-hero-card" onclick="showView('infographics')">
                 <div class="res-icon">📊</div>
                 <div class="res-title">Infographics</div>
                 <div class="res-desc">
@@ -1622,6 +1666,64 @@
                 <div class="res-desc">
                   Prompts created using best practices in AI prompt engineering
                 </div>
+              </div>
+            </div>
+
+            <div class="section-header">Latest Articles</div>
+            
+            <div class="article-list">
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/linux-fundamentals/', 'Linux Fundamentals', '🐧')">
+                <div class="art-thumb">🐧</div>
+                <div class="art-info">
+                  <div class="art-title">Linux Fundamentals</div>
+                  <div class="art-meta">Mar 03, 2023 • labs-research-and-ctf/lecture-notes/linux-fundamentals</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/networking-fundamentals/', 'Networking Fundamentals', '📄')">
+                <div class="art-thumb">📄</div>
+                <div class="art-info">
+                  <div class="art-title">Networking Fundamentals</div>
+                  <div class="art-meta">Feb 14, 2023 • labs-research-and-ctf/lecture-notes/networking-fundamentals</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW: Infographics Window -->
+        <div class="window-card" id="infographicsCard" style="display: none;">
+          <div class="card-header">
+            <div class="card-title">Infographics</div>
+            <div class="card-controls">
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            
+            <div style="margin-bottom: 24px; text-align: center; color: rgba(255,255,255,0.7); font-size: 14px; background: rgba(80, 250, 123, 0.1); border: 1px solid rgba(80, 250, 123, 0.2); padding: 10px; border-radius: 8px;">
+              ℹ️ Tip: Click thumbnail to view full size. Right click and download the original image for use.
+            </div>
+
+            <div class="infographic-grid">
+              <div class="infographic-item" onclick="window.open('https://github.com/Anand-Mohankumar/Portfolio/blob/main/infographics/Expert%20AI%20Prompting%20Guide%20Infographic.png?raw=true', '_blank')">
+                <img src="https://github.com/Anand-Mohankumar/Portfolio/blob/main/infographics/Expert%20AI%20Prompting%20Guide%20Infographic.png?raw=true" alt="Expert AI Prompting Guide" class="infographic-thumb">
+                <div class="infographic-caption">Expert AI Prompting Guide</div>
+              </div>
+
+              <div class="infographic-item" onclick="window.open('https://github.com/Anand-Mohankumar/Portfolio/blob/main/infographics/Mastering%20AI_%20A%2030-Day%20Guide.png?raw=true', '_blank')">
+                <img src="https://github.com/Anand-Mohankumar/Portfolio/blob/main/infographics/Mastering%20AI_%20A%2030-Day%20Guide.png?raw=true" alt="Mastering AI: A 30-Day Guide" class="infographic-thumb">
+                <div class="infographic-caption">Mastering AI: A 30-Day Guide</div>
               </div>
             </div>
 
@@ -1864,6 +1966,7 @@
       labs: document.getElementById('labsCard'), // NEW
       lectureNotes: document.getElementById('lectureNotesCard'), // NEW: Lecture Notes
       ai: document.getElementById('aiCard'),     // NEW
+      infographics: document.getElementById('infographicsCard'), // NEW: Infographics
       home: document.getElementById('homeCard'),
       projects: document.getElementById('projectsCard'),
       skills: document.getElementById('skillsCard'),
@@ -1883,6 +1986,7 @@
       labs: { id: 'labs', parent: 'projects', title: 'Labs & Research', icon: '🔬' },
       lectureNotes: { id: 'lectureNotes', parent: 'projects', title: 'Lecture Notes', icon: '📓' },
       ai: { id: 'ai', parent: 'projects', title: 'AI & Automation', icon: '🧠' },
+      infographics: { id: 'infographics', parent: 'projects', title: 'Infographics', icon: '📊' },
       
       iframe: { id: 'iframe', parent: 'projects', title: 'Content', icon: '🌐' }
     };
