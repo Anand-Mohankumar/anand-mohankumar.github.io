@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Anand Mohankumar - Portfolio</title>
+  
+  <!-- 1. ADDED FAVICON -->
+  <link rel="icon" href="https://github.com/Anand-Mohankumar/Anand-Mohankumar/blob/main/App%20Logo.png?raw=true" type="image/png">
 
-  <!-- Google Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <!-- Font for Boot Log -->
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&display=swap" rel="stylesheet">
 
   <style>
@@ -925,6 +926,138 @@
       51%, 100% { opacity: 0; }
     }
 
+    /* --- NEW RESOURCES SECTION STYLES --- */
+    .resource-hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .resource-hero-card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .resource-hero-card:hover {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .res-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+    }
+
+    .res-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .res-desc {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.5;
+    }
+
+    /* Section Headers */
+    .section-header {
+      font-size: 16px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Article List Styles */
+    .article-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .article-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .article-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(4px);
+    }
+
+    .art-thumb {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      font-size: 18px;
+    }
+
+    .art-info {
+      flex: 1;
+    }
+
+    .art-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 4px;
+    }
+
+    .art-meta {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Arrow icon for articles */
+    .art-arrow {
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.2s ease;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .article-item:hover .art-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
     /* Scrollbar */
     .content-area::-webkit-scrollbar {
       width: 8px;
@@ -962,6 +1095,10 @@
       .sidebar-item {
         width: 44px;
         height: 44px;
+      }
+      
+      .resource-hero-grid {
+        grid-template-columns: 1fr; /* Stack vertically on mobile */
       }
 
       .content-area {
@@ -1083,23 +1220,19 @@
 </head>
 <body>
   <canvas id="webgl-bg"></canvas>
-  <!-- Boot Screen -->
   <div class="boot-screen" id="bootScreen">
     <div class="boot-logo">
       <img src="https://github.com/Anand-Mohankumar/Anand-Mohankumar/blob/main/App%20Logo.png?raw=true" alt="Logo">
     </div>
     <div class="loading-container">
       <div class="boot-text" id="bootText">
-        <!-- Text injected by JS -->
-      </div>
+        </div>
     </div>
   </div>
 
   <div class="desktop">
     
-    <!-- Main Content -->
     <div class="main-content">
-      <!-- Top Bar -->
       <div class="topbar">
         <div class="topbar-left">
           <div class="app-logo">
@@ -1113,14 +1246,12 @@
               Home
             </div>
           </div>
-          <!-- Left Overflow Indicator -->
           <div class="tabs-overflow-indicator" id="tabsOverflowIndicatorLeft" title="Scroll Left">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
           </div>
           <div class="open-windows-tabs" id="openWindowsTabs"></div>
-          <!-- Right Overflow Indicator -->
           <div class="tabs-overflow-indicator" id="tabsOverflowIndicator" title="More windows available">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="9 18 15 12 9 6"></polyline>
@@ -1130,9 +1261,7 @@
         <div class="topbar-right" id="clock">00:00</div>
       </div>
 
-      <!-- Content Area -->
       <div class="content-area">
-        <!-- Home Card (Initially Hidden, waiting for boot sequence) -->
         <div class="window-card mobile-active" id="homeCard" style="display: none;">
           <div class="card-header">
             <div class="card-title">Home</div>
@@ -1190,7 +1319,6 @@
           </div>
         </div>
 
-        <!-- Projects Card -->
         <div class="window-card" id="projectsCard" style="display: none;">
           <div class="card-header">
             <div class="card-title">Projects</div>
@@ -1209,9 +1337,9 @@
           <div class="card-content">
             <h3 style="color: rgba(255,255,255,0.7); margin-bottom: 20px; font-weight:500;">My Work</h3>
             <div class="project-grid">
-              <div class="project-item" onclick="showView('research')">
-                <div class="project-icon">🔬</div>
-                <div class="project-title">Labs, Research<br>and CTF</div>
+              <div class="project-item" onclick="showView('resources')">
+                <div class="project-icon">📚</div>
+                <div class="project-title">Resources &<br>Knowledgebase</div>
               </div>
               <div class="project-item" onclick="openInIframe('https://www.inoreader.com/stream/user/1005486907/tag/Infosec%20News/view/html?t=InfoSec%20Daily&l=https%3A%2F%2Fgithub.com%2FAnand-Mohankumar%2FAnand-Mohankumar%2Fblob%2Fmain%2FApp%2520Logo.png&lw=5&cs=m&c=0xe0e0e0&bc=0x0a141a&lh=5&lc=0xe56a40', 'InfoSec Daily', '📋')">
                 <div class="project-icon">📋</div>
@@ -1229,7 +1357,6 @@
           </div>
         </div>
 
-        <!-- Terminal Card -->
         <div class="window-card" id="terminalCard" style="display: none;">
           <div class="card-header">
             <div class="card-title">Terminal</div>
@@ -1265,10 +1392,9 @@
           </div>
         </div>
 
-        <!-- Research Card -->
-        <div class="window-card" id="researchCard" style="display: none;">
+        <div class="window-card" id="resourcesCard" style="display: none;">
           <div class="card-header">
-            <div class="card-title">Labs & Research</div>
+            <div class="card-title">Resources and Knowledgebase</div>
             <div class="card-controls">
               <div class="control-btn btn-minimize" title="Minimize">
                 <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
@@ -1282,23 +1408,319 @@
             </div>
           </div>
           <div class="card-content">
-            <h3 style="color:rgba(255,255,255,0.7); margin-bottom:20px;">Research Notes</h3>
-            <div class="project-grid">
-              <div class="project-item"
-                onclick="window.open('https://anand-mohankumar.github.io/Networking-Fundamentals/', '_blank')">
-                <div class="project-icon">📄</div>
-                <div class="project-title">Networking Fundamentals</div>
+            
+            <div class="resource-hero-grid">
+              <!-- UPDATED ONCLICK -->
+              <div class="resource-hero-card" onclick="showView('labs')">
+                <div class="res-icon">🔬</div>
+                <div class="res-title">Labs, Research & CTF</div>
+                <div class="res-desc">
+                  Explore Homelab setup guides, research reports, CTF walkthroughs, and curated educational resources.
+                </div>
               </div>
-              <div class="project-item"
-              onclick="window.open('https://anand-mohankumar.github.io/Linux-Fundamentals/', '_blank')">
-                <div class="project-icon">📄</div>
-                <div class="project-title">Linux Fundamentals</div>
+
+              <!-- UPDATED ONCLICK -->
+              <div class="resource-hero-card" onclick="showView('ai')">
+                <div class="res-icon">🧠</div>
+                <div class="res-title">AI & Automation</div>
+                <div class="res-desc">
+                  Leverage agentic workflows and optimized prompts to automate tasks and enhance efficiency.
+                </div>
+              </div>
+
+              <div class="resource-hero-card" onclick="alert('Infographics coming soon!')">
+                <div class="res-icon">📊</div>
+                <div class="res-title">Infographics</div>
+                <div class="res-desc">
+                  Simplify complex concepts with clear, visual summaries and easy-to-understand infographics.
+                </div>
+              </div>
+            </div>
+
+            <div class="section-header">Latest Articles</div>
+            
+            <div class="article-list">
+              
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/networking-fundamentals/', 'Networking Fundamentals', '📄')">
+                <div class="art-thumb">📄</div>
+                <div class="art-info">
+                  <div class="art-title">Networking Fundamentals</div>
+                  <div class="art-meta">Jan 24, 2024 • Research</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/linux-fundamentals/', 'Linux Fundamentals', '🐧')">
+                <div class="art-thumb">🐧</div>
+                <div class="art-info">
+                  <div class="art-title">Linux Fundamentals</div>
+                  <div class="art-meta">Jan 12, 2024 • Documentation</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item">
+                <div class="art-thumb">🛡️</div>
+                <div class="art-info">
+                  <div class="art-title">Building EDR agents for AI & Automation</div>
+                  <div class="art-meta">Jan 08, 2024 • Security Ops</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item">
+                <div class="art-thumb">☁️</div>
+                <div class="art-info">
+                  <div class="art-title">How to Fix: Splunk and AWS Integration</div>
+                  <div class="art-meta">Dec 20, 2023 • Cloud Security</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW: Labs & Research Window -->
+        <div class="window-card" id="labsCard" style="display: none;">
+          <div class="card-header">
+            <div class="card-title">Labs, Research & CTF</div>
+            <div class="card-controls">
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="resource-hero-grid">
+              <div class="resource-hero-card" onclick="alert('Labs section coming soon!')">
+                <div class="res-icon">🧪</div>
+                <div class="res-title">Labs</div>
+                <div class="res-desc">
+                  Hands-on experiments and technical demonstrations.
+                </div>
+              </div>
+
+              <div class="resource-hero-card" onclick="alert('CTF Section coming soon!')">
+                <div class="res-icon">🚩</div>
+                <div class="res-title">CTF</div>
+                <div class="res-desc">
+                  Capture The Flag writeups and challenges.
+                </div>
+              </div>
+
+              <!-- UPDATED: Opens Lecture Notes Window -->
+              <div class="resource-hero-card" onclick="showView('lectureNotes')">
+                <div class="res-icon">📓</div>
+                <div class="res-title">Lecture Notes</div>
+                <div class="res-desc">
+                  Academic notes and research documentation.
+                </div>
+              </div>
+            </div>
+
+            <div class="section-header">Latest Articles</div>
+            
+            <div class="article-list">
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/networking-fundamentals/', 'Networking Fundamentals', '📄')">
+                <div class="art-thumb">📄</div>
+                <div class="art-info">
+                  <div class="art-title">Networking Fundamentals</div>
+                  <div class="art-meta">Jan 24, 2024 • Research</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/linux-fundamentals/', 'Linux Fundamentals', '🐧')">
+                <div class="art-thumb">🐧</div>
+                <div class="art-info">
+                  <div class="art-title">Linux Fundamentals</div>
+                  <div class="art-meta">Jan 12, 2024 • Documentation</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item">
+                <div class="art-thumb">🛡️</div>
+                <div class="art-info">
+                  <div class="art-title">Building EDR agents for AI & Automation</div>
+                  <div class="art-meta">Jan 08, 2024 • Security Ops</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item">
+                <div class="art-thumb">☁️</div>
+                <div class="art-info">
+                  <div class="art-title">How to Fix: Splunk and AWS Integration</div>
+                  <div class="art-meta">Dec 20, 2023 • Cloud Security</div>
+                </div>
+                <div class="art-arrow">→</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Skills Card -->
+        <!-- NEW: Lecture Notes Window -->
+        <div class="window-card" id="lectureNotesCard" style="display: none;">
+          <div class="card-header">
+            <div class="card-title">Lecture Notes</div>
+            <div class="card-controls">
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="resource-hero-grid" style="grid-template-columns: repeat(2, 1fr);">
+              <div class="resource-hero-card" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/networking-fundamentals/', 'Networking Fundamentals', '📡')">
+                <div class="res-icon">📡</div>
+                <div class="res-title">Networking Fundamentals</div>
+                <div class="res-desc">
+                  Core concepts of computer networking and protocols.
+                </div>
+              </div>
+
+              <div class="resource-hero-card" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/linux-fundamentals/', 'Linux Fundamentals', '🐧')">
+                <div class="res-icon">🐧</div>
+                <div class="res-title">Linux Fundamentals</div>
+                <div class="res-desc">
+                  Essential Linux command line and system administration.
+                </div>
+              </div>
+            </div>
+
+            <div class="section-header">Latest Articles</div>
+            
+            <div class="article-list">
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/networking-fundamentals/', 'Networking Fundamentals', '📄')">
+                <div class="art-thumb">📄</div>
+                <div class="art-info">
+                  <div class="art-title">Networking Fundamentals</div>
+                  <div class="art-meta">Jan 24, 2024 • Research</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/linux-fundamentals/', 'Linux Fundamentals', '🐧')">
+                <div class="art-thumb">🐧</div>
+                <div class="art-info">
+                  <div class="art-title">Linux Fundamentals</div>
+                  <div class="art-meta">Jan 12, 2024 • Documentation</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item">
+                <div class="art-thumb">🛡️</div>
+                <div class="art-info">
+                  <div class="art-title">Building EDR agents for AI & Automation</div>
+                  <div class="art-meta">Jan 08, 2024 • Security Ops</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item">
+                <div class="art-thumb">☁️</div>
+                <div class="art-info">
+                  <div class="art-title">How to Fix: Splunk and AWS Integration</div>
+                  <div class="art-meta">Dec 20, 2023 • Cloud Security</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW: AI & Automation Window -->
+        <div class="window-card" id="aiCard" style="display: none;">
+          <div class="card-header">
+            <div class="card-title">AI & Automation</div>
+            <div class="card-controls">
+              <div class="control-btn btn-minimize" title="Minimize">
+                <svg width="10" height="2" viewBox="0 0 10 2" fill="none"><rect width="10" height="2" rx="1" fill="currentColor"/></svg>
+              </div>
+              <div class="control-btn btn-maximize" title="Maximize">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </div>
+              <div class="control-btn btn-close" title="Close">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="resource-hero-grid" style="grid-template-columns: repeat(2, 1fr);">
+              <div class="resource-hero-card" onclick="alert('Workflows coming soon!')">
+                <div class="res-icon">🤖</div>
+                <div class="res-title">N8N Workflows</div>
+                <div class="res-desc">
+                  Automated workflows and integration logic patterns.
+                </div>
+              </div>
+
+              <div class="resource-hero-card" onclick="alert('Prompts coming soon!')">
+                <div class="res-icon">💬</div>
+                <div class="res-title">Prompts</div>
+                <div class="res-desc">
+                  Curated AI prompts for security and productivity.
+                </div>
+              </div>
+            </div>
+
+            <div class="section-header">Latest Articles</div>
+            
+            <div class="article-list">
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/networking-fundamentals/', 'Networking Fundamentals', '📄')">
+                <div class="art-thumb">📄</div>
+                <div class="art-info">
+                  <div class="art-title">Networking Fundamentals</div>
+                  <div class="art-meta">Jan 24, 2024 • Research</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item" onclick="openInIframe('https://cyberamo.work/labs-research-and-ctf/lecture-notes/linux-fundamentals/', 'Linux Fundamentals', '🐧')">
+                <div class="art-thumb">🐧</div>
+                <div class="art-info">
+                  <div class="art-title">Linux Fundamentals</div>
+                  <div class="art-meta">Jan 12, 2024 • Documentation</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item">
+                <div class="art-thumb">🛡️</div>
+                <div class="art-info">
+                  <div class="art-title">Building EDR agents for AI & Automation</div>
+                  <div class="art-meta">Jan 08, 2024 • Security Ops</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+
+              <div class="article-item">
+                <div class="art-thumb">☁️</div>
+                <div class="art-info">
+                  <div class="art-title">How to Fix: Splunk and AWS Integration</div>
+                  <div class="art-meta">Dec 20, 2023 • Cloud Security</div>
+                </div>
+                <div class="art-arrow">→</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="window-card" id="skillsCard" style="display: none;">
           <div class="card-header">
             <div class="card-title">Skills</div>
@@ -1365,7 +1787,6 @@
           </div>
         </div>
 
-        <!-- Iframe Card (dynamic) -->
         <div class="window-card" id="iframeCard" style="display: none;">
           <div class="card-header">
             <div class="card-title" id="iframeTitle">Content</div>
@@ -1388,7 +1809,6 @@
       </div>
     </div>
     
-    <!-- DOCK SIDEBAR (Moved out of Desktop wrapper to be global) -->
     <div class="sidebar dock-hidden">
       <div class="sidebar-item dock-item-hidden active" data-view="home" title="Home">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1512,7 +1932,10 @@
 
     // View switching
     const cards = {
-      research: document.getElementById('researchCard'),
+      resources: document.getElementById('resourcesCard'),
+      labs: document.getElementById('labsCard'), // NEW
+      lectureNotes: document.getElementById('lectureNotesCard'), // NEW: Lecture Notes
+      ai: document.getElementById('aiCard'),     // NEW
       home: document.getElementById('homeCard'),
       projects: document.getElementById('projectsCard'),
       skills: document.getElementById('skillsCard'),
@@ -1526,7 +1949,13 @@
       projects: { id: 'projects', parent: 'projects', title: 'Projects', icon: '💼' },
       skills: { id: 'skills', parent: 'skills', title: 'Skills', icon: '⚡' },
       terminal: { id: 'terminal', parent: 'terminal', title: 'Terminal', icon: '💻' },
-      research: { id: 'research', parent: 'projects', title: 'Labs & Research', icon: '🔬' },
+      
+      resources: { id: 'resources', parent: 'projects', title: 'Resources', icon: '📚' },
+      // NEW CONFIGS
+      labs: { id: 'labs', parent: 'projects', title: 'Labs & Research', icon: '🔬' },
+      lectureNotes: { id: 'lectureNotes', parent: 'projects', title: 'Lecture Notes', icon: '📓' },
+      ai: { id: 'ai', parent: 'projects', title: 'AI & Automation', icon: '🧠' },
+      
       iframe: { id: 'iframe', parent: 'projects', title: 'Content', icon: '🌐' }
     };
 
