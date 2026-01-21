@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Anand Mohankumar - Portfolio</title>
   
-  <!-- 1. ADDED FAVICON -->
   <link rel="icon" href="https://github.com/Anand-Mohankumar/Anand-Mohankumar/blob/main/App%20Logo.png?raw=true" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -545,7 +544,7 @@
       max-width: 100%;
     }
 
-    /* GLASS WINDOW CARD */
+    /* GLASS WINDOW CARD - FIXED FOR MACBOOK/SAFARI RENDERING */
     .window-card {
       /* The core frosted glass effect */
       background: rgba(40, 45, 55, 0.55);
@@ -578,7 +577,17 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%);
+      /* MACBOOK FIX: Use translate3d instead of translate to force GPU acceleration.
+         This prevents shadow clipping and z-index overlap glitches in Safari.
+      */
+      transform: translate3d(-50%, -50%, 0); 
+      
+      /* MACBOOK FIX: Isolation creates a new stacking context, preventing background
+         filters from bleeding into other windows or malfunctioning.
+      */
+      isolation: isolate; 
+      will-change: transform, opacity;
+      
       overflow: hidden;
     }
 
@@ -586,7 +595,7 @@
     @keyframes liquidOpenDesktop {
         0% {
             opacity: 0;
-            transform: translate(-50%, -50%) scale(0.2);
+            transform: translate3d(-50%, -50%, 0) scale(0.2); /* Updated to 3D */
             border-radius: 50%; /* Start as circle/drop */
         }
         40% {
@@ -594,7 +603,7 @@
         }
         100% {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+            transform: translate3d(-50%, -50%, 0) scale(1); /* Updated to 3D */
             border-radius: 16px; /* End as window */
         }
     }
@@ -636,7 +645,7 @@
       max-width: none;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate3d(-50%, -50%, 0); /* Updated to 3D */
       border-radius: 16px;
     }
 
@@ -908,6 +917,8 @@
       color: #ccc;
       box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
       min-height: 300px;
+      display: flex;
+      flex-direction: column;
     }
 
     .terminal-line {
@@ -919,6 +930,17 @@
     .terminal-prompt {
       color: #4cd964;
       font-weight: bold;
+    }
+    
+    /* Terminal Input Style */
+    #termInput {
+      background: transparent;
+      border: none;
+      color: #ccc;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      width: 70%;
+      outline: none;
     }
 
     @keyframes blink {
@@ -1352,7 +1374,7 @@
                 </svg>
                 GitHub
               </a>
-              <a href="https://github.com/Anand-Mohankumar/Anand-Mohankumar/blob/main/Resume.pdf" class="social-btn" target="_blank">
+              <a href="https://github.com/Anand-Mohankumar/Anand-Mohankumar/blob/main/Resume.pdf?raw=true" class="social-btn" target="_blank">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
                 </svg>
@@ -1388,7 +1410,7 @@
                 <div class="project-icon">📋</div>
                 <div class="project-title">InfoSec Daily</div>
               </div>
-              <div class="project-item" onclick="window.open('https://github.com/Anand-Mohankumar/Anand-Mohankumar/blob/main/Resume.pdf', '_blank')">
+              <div class="project-item" onclick="window.open('https://github.com/Anand-Mohankumar/Anand-Mohankumar/blob/main/Resume.pdf?raw=true', '_blank')">
                 <div class="project-icon">📄</div>
                 <div class="project-title">Anand_Resume.pdf</div>
               </div>
@@ -1416,7 +1438,7 @@
             </div>
           </div>
           <div class="card-content">
-            <div class="terminal-content">
+            <div class="terminal-content" id="terminalOutput">
               <div class="terminal-line"><span class="terminal-prompt">anand@cybramo:~$</span> whoami</div>
               <div class="terminal-line">Security Analyst | Compliance Professional</div>
               <div class="terminal-line"><span class="terminal-prompt">anand@cybramo:~$</span> cat experience.txt</div>
@@ -1430,7 +1452,10 @@
               <div class="terminal-line">└── CCNA Routing & Switching</div>
               <div class="terminal-line"><span class="terminal-prompt">anand@cybramo:~$</span> echo $INTERESTS</div>
               <div class="terminal-line">CTF | OSINT | Threat Hunting</div>
-              <div class="terminal-line"><span class="terminal-prompt">anand@cybramo:~$</span> <span style="animation: blink 1s infinite;">_</span></div>
+              <div class="terminal-line" id="terminalInputLine">
+                  <span class="terminal-prompt">anand@cybramo:~$</span>
+                  <input type="text" id="termInput" autocomplete="off" spellcheck="false" autofocus>
+              </div>
             </div>
           </div>
         </div>
@@ -1453,7 +1478,6 @@
           <div class="card-content">
             
             <div class="resource-hero-grid">
-              <!-- UPDATED ONCLICK -->
               <div class="resource-hero-card" onclick="showView('labs')">
                 <div class="res-icon">🔬</div>
                 <div class="res-title">Labs, Research & CTF</div>
@@ -1462,7 +1486,6 @@
                 </div>
               </div>
 
-              <!-- UPDATED ONCLICK -->
               <div class="resource-hero-card" onclick="showView('ai')">
                 <div class="res-icon">🧠</div>
                 <div class="res-title">AI & Automation</div>
@@ -1471,7 +1494,6 @@
                 </div>
               </div>
 
-              <!-- UPDATED ONCLICK -->
               <div class="resource-hero-card" onclick="showView('infographics')">
                 <div class="res-icon">📊</div>
                 <div class="res-title">Infographics</div>
@@ -1507,7 +1529,6 @@
           </div>
         </div>
 
-        <!-- NEW: Labs & Research Window -->
         <div class="window-card" id="labsCard" style="display: none;">
           <div class="card-header">
             <div class="card-title">Labs, Research & CTF</div>
@@ -1541,7 +1562,6 @@
                 </div>
               </div>
 
-              <!-- UPDATED: Opens Lecture Notes Window -->
               <div class="resource-hero-card" onclick="showView('lectureNotes')">
                 <div class="res-icon">📓</div>
                 <div class="res-title">Lecture Notes</div>
@@ -1575,7 +1595,6 @@
           </div>
         </div>
 
-        <!-- NEW: Lecture Notes Window -->
         <div class="window-card" id="lectureNotesCard" style="display: none;">
           <div class="card-header">
             <div class="card-title">Lecture Notes</div>
@@ -1634,7 +1653,6 @@
           </div>
         </div>
 
-        <!-- NEW: AI & Automation Window -->
         <div class="window-card" id="aiCard" style="display: none;">
           <div class="card-header">
             <div class="card-title">AI & Automation</div>
@@ -1693,7 +1711,6 @@
           </div>
         </div>
 
-        <!-- NEW: Infographics Window -->
         <div class="window-card" id="infographicsCard" style="display: none;">
           <div class="card-header">
             <div class="card-title">Infographics</div>
@@ -1962,6 +1979,7 @@
 
     // View switching
     const cards = {
+      // UPDATED: 'resources' mapped to the new card ID
       resources: document.getElementById('resourcesCard'),
       labs: document.getElementById('labsCard'), // NEW
       lectureNotes: document.getElementById('lectureNotesCard'), // NEW: Lecture Notes
@@ -1981,6 +1999,7 @@
       skills: { id: 'skills', parent: 'skills', title: 'Skills', icon: '⚡' },
       terminal: { id: 'terminal', parent: 'terminal', title: 'Terminal', icon: '💻' },
       
+      // UPDATED: 'resources' config replacing 'research'
       resources: { id: 'resources', parent: 'projects', title: 'Resources', icon: '📚' },
       // NEW CONFIGS
       labs: { id: 'labs', parent: 'projects', title: 'Labs & Research', icon: '🔬' },
@@ -2075,7 +2094,8 @@
                 if (rect.right > window.innerWidth) {
                     // Too far right, snap back
                     win.style.left = (window.innerWidth - rect.width / 2 - 20) + 'px'; 
-                    win.style.transform = 'translate(-50%, -50%)'; // Reset centering logic if messed up
+                    // Updated to 3D Transform
+                    win.style.transform = 'translate3d(-50%, -50%, 0)'; 
                 }
                 
                 // Vertical Check
@@ -2258,7 +2278,8 @@
           
           // Initial State (At Icon)
           card.style.transition = 'none'; // Disable transition for setup
-          card.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) scale(0.1)`;
+          // Updated to 3D Transform
+          card.style.transform = `translate3d(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px), 0) scale(0.1)`;
           card.style.opacity = '0';
           card.style.borderRadius = '50%'; // Circle drop
           
@@ -2267,7 +2288,8 @@
           
           // Final State (Center Screen)
           card.style.transition = 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s ease, border-radius 0.5s ease';
-          card.style.transform = 'translate(-50%, -50%) scale(1)';
+          // Updated to 3D Transform
+          card.style.transform = 'translate3d(-50%, -50%, 0) scale(1)';
           card.style.opacity = '1';
           card.style.borderRadius = '16px';
           
@@ -2299,6 +2321,14 @@
       // Update UI components
       updateSidebar(viewName); 
       updateOpenWindowsTabs();
+      
+      // NEW: Auto-focus terminal input if terminal is opened
+      if (viewName === 'terminal') {
+          setTimeout(() => {
+              const input = document.getElementById('termInput');
+              if (input) input.focus();
+          }, 500); // Wait for animation
+      }
     }
     
     function bringToFront(window) {
@@ -2418,7 +2448,8 @@
 
       // Apply Closing Animation
       card.style.transition = 'transform 0.4s ease-in, opacity 0.4s ease, border-radius 0.4s ease';
-      card.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) scale(0.1)`;
+      // Updated to 3D Transform
+      card.style.transform = `translate3d(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px), 0) scale(0.1)`;
       card.style.opacity = '0';
       card.style.borderRadius = '50%';
 
@@ -2430,7 +2461,8 @@
           // This prevents the window from "jumping" if it was previously dragged to a specific pixel location
           card.style.left = '50%';
           card.style.top = '50%';
-          card.style.transform = 'translate(-50%, -50%)'; 
+          // Updated to 3D Transform
+          card.style.transform = 'translate3d(-50%, -50%, 0)'; 
           card.style.borderRadius = '16px';
           
           openWindows = openWindows.filter(w => w !== viewName);
@@ -2501,7 +2533,7 @@
           if (card.classList.contains('full-width')) {
             card.style.left = '50%';
             card.style.top = '50%';
-            card.style.transform = 'translate(-50%, -50%)';
+            card.style.transform = 'translate3d(-50%, -50%, 0)';
           }
         }
       });
@@ -2545,6 +2577,69 @@
     function closeIframe() {
       document.getElementById('contentIframe').src = '';
       closeWindow('iframe');
+    }
+    
+    // NEW: TERMINAL LOGIC
+    const termInput = document.getElementById('termInput');
+    const termOutput = document.getElementById('terminalOutput');
+
+    if(termInput) {
+        termInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value.trim();
+                
+                // Create a history line in the DOM
+                const newLine = document.createElement('div');
+                newLine.className = 'terminal-line';
+                // Sanitize input slightly to prevent HTML injection if displayed
+                const sanitizedCommand = command.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                newLine.innerHTML = `<span class="terminal-prompt">anand@cybramo:~$</span> ${sanitizedCommand}`;
+                
+                // Insert before the input line
+                const inputLine = document.getElementById('terminalInputLine');
+                termOutput.insertBefore(newLine, inputLine);
+
+                // Command Logic
+                if (command === 'n8n') {
+                    window.open('https://n8ncloud.cyberamo.work/', '_blank');
+                    const resLine = document.createElement('div');
+                    resLine.className = 'terminal-line';
+                    resLine.innerText = "Opening n8n Cloud in a new tab...";
+                    termOutput.insertBefore(resLine, inputLine);
+                } 
+                else if (command === 'clear') {
+                     const lines = termOutput.querySelectorAll('.terminal-line:not(#terminalInputLine)');
+                     lines.forEach(line => line.remove());
+                } 
+                else if (command === 'help') {
+                     const helpLine = document.createElement('div');
+                     helpLine.className = 'terminal-line';
+                     helpLine.innerHTML = "Available commands:<br> - n8n: Access Automation Cloud<br> - clear: Clear terminal<br> - whoami: Display user info<br> - help: Show this message";
+                     termOutput.insertBefore(helpLine, inputLine);
+                }
+                else if (command === 'whoami') {
+                     const whoLine = document.createElement('div');
+                     whoLine.className = 'terminal-line';
+                     whoLine.innerText = "Security Analyst | Compliance Professional";
+                     termOutput.insertBefore(whoLine, inputLine);
+                }
+                else if (command !== "") {
+                     const errLine = document.createElement('div');
+                     errLine.className = 'terminal-line';
+                     errLine.innerText = `Command not found: ${sanitizedCommand}. Type 'help' for available commands.`;
+                     termOutput.insertBefore(errLine, inputLine);
+                }
+
+                // Reset and Scroll
+                this.value = '';
+                termOutput.scrollTop = termOutput.scrollHeight;
+            }
+        });
+
+        // Click anywhere in terminal to focus input
+        document.getElementById('terminalCard').addEventListener('click', () => {
+            termInput.focus();
+        });
     }
   
     
